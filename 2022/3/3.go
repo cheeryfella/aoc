@@ -64,7 +64,7 @@ var priority = map[string]int{
 }
 
 func main() {
-	f, err := os.Open("./2022/3input/3.txt")
+	f, err := os.Open("./2022/3/3.txt")
 	if err != nil {
 		fmt.Print(err)
 		panic("unable to open file")
