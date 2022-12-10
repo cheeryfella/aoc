@@ -90,13 +90,67 @@ func main() {
 		Y:       0,
 		History: map[string]bool{"0,0": true},
 	}
-	tail := &Knot{
+	// day 1
+	//tail := &Knot{
+	//	X:       0,
+	//	Y:       0,
+	//	History: map[string]bool{"0,0": true},
+	//}
+	//head.register(tail)
+	k1 := &Knot{
 		X:       0,
 		Y:       0,
 		History: map[string]bool{"0,0": true},
 	}
-
-	head.register(tail)
+	k2 := &Knot{
+		X:       0,
+		Y:       0,
+		History: map[string]bool{"0,0": true},
+	}
+	k3 := &Knot{
+		X:       0,
+		Y:       0,
+		History: map[string]bool{"0,0": true},
+	}
+	k4 := &Knot{
+		X:       0,
+		Y:       0,
+		History: map[string]bool{"0,0": true},
+	}
+	k5 := &Knot{
+		X:       0,
+		Y:       0,
+		History: map[string]bool{"0,0": true},
+	}
+	k6 := &Knot{
+		X:       0,
+		Y:       0,
+		History: map[string]bool{"0,0": true},
+	}
+	k7 := &Knot{
+		X:       0,
+		Y:       0,
+		History: map[string]bool{"0,0": true},
+	}
+	k8 := &Knot{
+		X:       0,
+		Y:       0,
+		History: map[string]bool{"0,0": true},
+	}
+	k9 := &Knot{
+		X:       0,
+		Y:       0,
+		History: map[string]bool{"0,0": true},
+	}
+	head.register(k1)
+	k1.register(k2)
+	k2.register(k3)
+	k3.register(k4)
+	k4.register(k5)
+	k5.register(k6)
+	k6.register(k7)
+	k7.register(k8)
+	k8.register(k9)
 
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
@@ -107,7 +161,6 @@ func main() {
 		head.Move(direction, distance)
 	}
 
-	fmt.Printf("Head %v %v\nTail %v %v\n", head.X, head.Y, tail.X, tail.Y)
-	fmt.Printf("History: %v\n", tail.History)
-	fmt.Printf("UNique: %v\n", len(tail.History))
+	fmt.Printf("Head %v %v\nTail %v %v\n", head.X, head.Y, k9.X, k9.Y)
+	fmt.Printf("UNique: %v\n", len(k9.History))
 }
