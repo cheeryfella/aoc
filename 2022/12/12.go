@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
 	"sync"
+	"time"
 )
 
 type Tile struct {
@@ -153,6 +155,9 @@ var Moves = []string{"n", "s", "e", "w"}
 
 var grid = Grid{}
 
+// day 2
+var startPoints [][]int
+
 func main() {
 	//f, err := os.Open("./2022/12/test.txt")
 	f, err := os.Open("./2022/12/12.txt")
@@ -166,7 +171,48 @@ func main() {
 
 	journey := NewJourney(end)
 	journey.travel(start)
-	fmt.Printf("\nJourney: %+v\n\tSteps: %v\n", journey.Path, journey.Path[end[0]][end[1]])
+
+	fmt.Printf("Journey1 Steps: %v\n\n", journey.Path[end[0]][end[1]])
+
+	//day 2
+	var steps []int
+
+	quit := make(chan bool)
+	go func() {
+		fmt.Print("\033[s")
+		chars := []string{
+			"", "|", "-|", "--|", "---|", "----|",
+			"---||", "--|||", "-||||", "|||||",
+			"||||-", "|||--", "||---", "|----", "-----",
+			"----", "---", "--", "-",
+		}
+		i := 0
+		for {
+			select {
+			case <-quit:
+				fmt.Print("\033[1A\033[K")
+				return
+			default:
+				no := i % len(chars)
+				fmt.Print("\033[1A\033[K" + chars[no] + "\n")
+				i += 1
+				time.Sleep(250 * time.Millisecond)
+			}
+		}
+	}()
+
+	for i := 0; i < len(startPoints); i++ {
+		j2 := NewJourney(end)
+		j2.travel(startPoints[i])
+		if j2.Path[end[0]][end[1]] > 0 {
+			steps = append(steps, j2.Path[end[0]][end[1]])
+		}
+	}
+	quit <- true
+	sort.Slice(steps, func(i, j int) bool {
+		return steps[i] <= steps[j]
+	})
+	fmt.Printf("\nJourney2 Steps: %v\n", steps[0])
 }
 
 func GenerateGrid(f io.Reader) Grid {
@@ -188,6 +234,11 @@ func GenerateGrid(f io.Reader) Grid {
 				end = append(end, row, i)
 				char = "z"
 			}
+			// day 2
+			if char == "a" {
+				startPoints = append(startPoints, []int{row, i})
+			}
+
 			t := Tile{
 				Height: Elevation[char],
 			}
